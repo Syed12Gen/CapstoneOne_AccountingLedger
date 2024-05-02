@@ -110,36 +110,8 @@ public class Menu {
 
     // Placeholder methods for report generation
     private String generateReport(String reportType) {
-        LocalDate now = LocalDate.now(); // Current date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        switch (reportType) {
-            case "Month to Date":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).isAfter(now.withDayOfMonth(1).minusDays(1)) &&
-                                LocalDate.parse(t.getDate(), formatter).isBefore(now.plusDays(1)))
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            case "Previous Month":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).isAfter(now.minusMonths(1).withDayOfMonth(1).minusDays(1)) &&
-                                LocalDate.parse(t.getDate(), formatter).isBefore(now.withDayOfMonth(1)))
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            case "Year to Date":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).getYear() == now.getYear() &&
-                                LocalDate.parse(t.getDate(), formatter).isBefore(now.plusDays(1)))
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            case "Previous Year":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).getYear() == now.getYear() - 1)
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            default:
-                return "Report data not implemented";
-        }
+        // Placeholder for report generation logic based on reportType
+        return reportType + " data";
     }
 
     private String generateReportForVendor(String vendor) {
