@@ -2,8 +2,10 @@ package com.ps;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionManager {
+    //
     private ArrayList<Transaction> transactions;
     private String filepath;
 
@@ -36,12 +38,11 @@ public class TransactionManager {
         }
     }
 
-
     public void saveTransactions() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filepath))) {
             for (Transaction transaction : transactions) {
                 // Create a formatted string for each transaction
-                String transactionText = String.format("%s at %s - %s (%s): $%.2f",
+                String transactionText = String.format("%s|%s|%s|%s|%.2f",
                         transaction.getDate(), transaction.getTime(), transaction.getDescription(),
                         transaction.getVendor(), transaction.getAmount());
                 pw.println(transactionText);
@@ -51,7 +52,6 @@ public class TransactionManager {
         }
     }
 
-
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
         saveTransactions(); // Save each time a new transaction is added
@@ -59,5 +59,16 @@ public class TransactionManager {
 
     public ArrayList<Transaction> getTransactions() {
         return transactions;
+    }
+
+    // Method to get transactions for a specific vendor
+    public List<Transaction> getTransactionsForVendor(String vendor) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+        return filteredTransactions;
     }
 }
