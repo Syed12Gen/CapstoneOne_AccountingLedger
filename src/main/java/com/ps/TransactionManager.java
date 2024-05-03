@@ -1,6 +1,9 @@
 package com.ps;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class TransactionManager {
     }
 
     public void loadTransactions() {
+        transactions.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             String line;
             boolean isFirstLine = true;  // Add a flag to track the first line (header)
@@ -61,6 +65,24 @@ public class TransactionManager {
         return transactions;
     }
 
+    public List<Transaction> getMonthToDateTransactions() {
+        List<Transaction> monthToDateTransactions = new ArrayList<>();
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate today = LocalDate.now();
+        DateRange dateRange = new DateRange(startOfMonth, today);
+
+        loadTransactions();
+
+        for(Transaction transaction: transactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+            if(dateRange.includes(transactionDate)) {
+                monthToDateTransactions.add(transaction);
+            }
+        }
+
+        return monthToDateTransactions;
+    }
+
     // Method to get transactions for a specific vendor
     public List<Transaction> getTransactionsForVendor(String vendor) {
         List<Transaction> filteredTransactions = new ArrayList<>();
@@ -71,4 +93,107 @@ public class TransactionManager {
         }
         return filteredTransactions;
     }
+
+    //new update
+
+    public List<Transaction> getYearToDateTransactions() {
+        List<Transaction> yearToDateTransactions = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalDate startOfYear = today.withDayOfYear(1);
+        DateRange dateRange = new DateRange(startOfYear, today);
+
+        loadTransactions();
+
+        for(Transaction transaction: transactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+            if(dateRange.includes(transactionDate)) {
+                yearToDateTransactions.add(transaction);
+            }
+        }
+
+        return yearToDateTransactions;
+    }
+
+    //new method getPreviousMonthTransactions
+
+    public List<Transaction> getPreviousMonthTransactions() {
+        List<Transaction> previousMonthTransactions = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+
+        LocalDate startOfPreviousMonth = now
+                .minusMonths(1)
+                .withDayOfMonth(1);
+
+        Month previousMonth = now
+                .minusMonths(1)
+                .getMonth();
+
+        LocalDate endOfPreviousMonth = now
+                .minusMonths(1)
+                .withDayOfMonth(previousMonth.length(isLeapYear(startOfPreviousMonth.getYear())));
+
+        DateRange dateRange = new DateRange(startOfPreviousMonth, endOfPreviousMonth);
+
+        for(Transaction transaction: transactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+            if(dateRange.includes(transactionDate)) {
+                previousMonthTransactions.add(transaction);
+            }
+        }
+
+        return previousMonthTransactions;
+    }
+
+    //new method previousYearTransactions
+    public List<Transaction> getPreviousYearTransactions() {
+        List<Transaction> previousYearTransactions = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+
+        LocalDate startOfPreviousYear = now
+                .minusYears(1)
+                .withMonth(1)
+                .withDayOfMonth(1);
+
+        LocalDate previousYear = now.minusYears(1);
+        LocalDate endOfPreviousYear;
+
+        if(isLeapYear(previousYear.getYear())) {
+            endOfPreviousYear = previousYear.withDayOfYear(366);
+        }
+        else {
+            endOfPreviousYear = previousYear.withDayOfYear(365);
+        }
+
+        DateRange dateRange = new DateRange(startOfPreviousYear, endOfPreviousYear);
+
+        for(Transaction transaction: transactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+            if(dateRange.includes(transactionDate)) {
+                previousYearTransactions.add(transaction);
+            }
+        }
+
+        return previousYearTransactions;
+    }
+
+    public List<Transaction> filterByVendor(String vendorFilter, List<Transaction> transactions) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+
+        for(Transaction transaction: transactions) {
+            if(transaction.getVendor().equals(vendorFilter)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
+    }
+
+    //leapYear Method
+    private static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+
+
+
 }

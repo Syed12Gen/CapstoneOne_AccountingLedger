@@ -1,8 +1,6 @@
 package com.ps;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Locale;
+import java.util.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -93,23 +91,29 @@ public class Menu {
             System.out.print("Enter option: ");
             option = scanner.next();
 
+            scanner.nextLine();
             switch (option) {
                 case "1":
-                    System.out.println("Month to Date Report: " + generateReport("Month To Date"));
+                    System.out.println("Month to Date Report: \n");
+                    generateReport("Month To Date");
                     break;
                 case "2":
-                    System.out.println("Previous Month Report: " + generateReport("Previous Month"));
+                    System.out.println("Previous Month Report: \n");
+                    generateReport("Previous Month");
                     break;
                 case "3":
-                    System.out.println("Year to Date Report: " + generateReport("Year To Date"));
+                    System.out.println("Year to Date Report: \n");
+                    generateReport("Year To Date");
                     break;
                 case "4":
-                    System.out.println("Previous Year Report: " + generateReport("Previous Year"));
+                    System.out.println("Previous Year Report: \n");
+                    generateReport("Previous Year");
                     break;
                 case "5":
                     System.out.print("Enter vendor name for report: ");
-                    String vendor = scanner.next();
-                    System.out.println("Report for Vendor '" + vendor + "': " + generateReportForVendor(vendor));
+                    String vendor = scanner.nextLine();
+                    System.out.println("Report for Vendor '" + vendor + "': \n");
+                    generateReportForVendor(vendor);
                     break;
                 case "0":
                     return;
@@ -119,57 +123,35 @@ public class Menu {
         } while (!option.equals("0"));
     }
 
-    // Placeholder methods for report generation
-    private String generateReport(String reportType) {
-        LocalDate now = LocalDate.now(); // Current date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private void generateReport(String reportType) {
+        List<Transaction> transactions = new ArrayList<>();
 
-        switch (reportType) {
-            case "Month to Date":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).isAfter(now.withDayOfMonth(1).minusDays(1)) &&
-                                LocalDate.parse(t.getDate(), formatter).isBefore(now.plusDays(1)))
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            case "Previous Month":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).isAfter(now.minusMonths(1).withDayOfMonth(1).minusDays(1)) &&
-                                LocalDate.parse(t.getDate(), formatter).isBefore(now.withDayOfMonth(1)))
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            case "Year to Date":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).getYear() == now.getYear() &&
-                                LocalDate.parse(t.getDate(), formatter).isBefore(now.plusDays(1)))
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            case "Previous Year":
-                return transactionManager.getTransactions().stream()
-                        .filter(t -> LocalDate.parse(t.getDate(), formatter).getYear() == now.getYear() - 1)
-                        .map(Transaction::toString)
-                        .collect(Collectors.joining("\n"));
-            default:
-                return "Report data not implemented";
+        transactions = switch (reportType) {
+            case "Month To Date" -> transactionManager.getMonthToDateTransactions();
+            case "Previous Month" -> transactionManager.getPreviousMonthTransactions();
+            case "Year To Date" -> transactionManager.getYearToDateTransactions();
+            case "Previous Year" -> transactionManager.getPreviousYearTransactions();
+            default -> transactions;
+        };
+
+
+        if(transactions.isEmpty()) {
+            System.out.println("No transactions found for selected report type.");
+            return;
         }
+
+        OutputFormatter.printOutput(transactions);
     }
 
-
-    private String generateReportForVendor(String vendor) {
-        StringBuilder reportBuilder = new StringBuilder();
-        List<Transaction> filteredTransactions = transactionManager.getTransactionsForVendor(vendor);
+    private void generateReportForVendor(String vendor) {
+        List<Transaction> filteredTransactions = transactionManager.filterByVendor(vendor, transactionManager.getTransactions());
 
         if (filteredTransactions.isEmpty()) {
-            return "No transactions found for vendor: " + vendor;
+            System.out.println("No transactions found for vendor: " + vendor);
         }
 
-        reportBuilder.append("Transactions for ").append(vendor).append(":\n");
-        for (Transaction transaction : filteredTransactions) {
-            reportBuilder.append(transaction.getDate())
-                    .append(" | ").append(transaction.getDescription())
-                    .append(" | $").append(transaction.getAmount())
-                    .append("\n");
-        }
-        return reportBuilder.toString();
+        OutputFormatter.printOutput(filteredTransactions);
     }
+
 
 }

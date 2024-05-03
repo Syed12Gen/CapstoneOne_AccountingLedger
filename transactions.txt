@@ -1,8 +1,4 @@
-2023-01-15|10:00:00|New Year party catering|Catering Co|-250.00
-2023-02-01|11:00:00|Client Invoice Feb|Client X|1200.00
-2023-03-10|16:00:00|Conference fees|Conference Org|-300.00
-2023-04-12|12:00:00|Spring sale income|Client Y|1500.00
-2023-05-01|09:00:00|Office Rent May|Property Management|-1000.00
-2023-05-10|14:00:00|Technology equipment|Tech Supplies|-750.00
-2023-04-15|12:00:00|Transaction|OfficeMax|2500.00
-2023-04-15|12:00:00|Transaction|OfficeMax|-1000.00
+Date|Time|Description|Vendor|Amount
+2024-05-01|01:51:46|Transaction 1|Vendor 1|5500.00
+2024-05-01|01:52:11|Transaction 2|Vendor 1|-700.00
+2024-05-01|01:52:11|Transaction 1|Vendor 2|-500.00
