@@ -4,8 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TransactionManager {
     //
@@ -83,18 +82,7 @@ public class TransactionManager {
         return monthToDateTransactions;
     }
 
-    // Method to get transactions for a specific vendor
-    public List<Transaction> getTransactionsForVendor(String vendor) {
-        List<Transaction> filteredTransactions = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
-                filteredTransactions.add(transaction);
-            }
-        }
-        return filteredTransactions;
-    }
-
-    //new update
+    //YearToDate Method
 
     public List<Transaction> getYearToDateTransactions() {
         List<Transaction> yearToDateTransactions = new ArrayList<>();
@@ -176,6 +164,44 @@ public class TransactionManager {
         return previousYearTransactions;
     }
 
+    //FilteredTransactions
+    public List<Transaction> getFilteredTransactions(Map<TransactionSearchFilter, Object> filters) {
+        loadTransactions();
+        Set<Transaction> filteredTransactions = new HashSet<>(transactions);
+
+        for (Map.Entry<TransactionSearchFilter, Object> entry : filters.entrySet()) {
+            TransactionSearchFilter filter = entry.getKey();
+            Object value = entry.getValue();
+
+            switch (filter) {
+                case DESCRIPTION:
+                    String descriptionFilter = (String) value;
+                    filteredTransactions.retainAll(filterByDescription(descriptionFilter, transactions));
+                    break;
+                case AMOUNT_RANGE:
+                    AmountRange amountRangeFilter = (AmountRange) value;
+                    filteredTransactions.retainAll(filterByAmountRange(amountRangeFilter, transactions));
+                    break;
+                case VENDOR:
+                    String vendorFilter = (String) value;
+                    filteredTransactions.retainAll(filterByVendor(vendorFilter, transactions));
+                    break;
+                case DATE_RANGE:
+                    DateRange dateRangeFilter = (DateRange) value;
+                    filteredTransactions.retainAll(filterByDateRange(dateRangeFilter, transactions));
+                    break;
+                // Add more cases for other filters if needed
+                default:
+                    throw new IllegalArgumentException("Unsupported filter: " + filter);
+            }
+        }
+
+        return new ArrayList<>(filteredTransactions);
+    }
+
+
+    //FilterByVendor Method
+
     public List<Transaction> filterByVendor(String vendorFilter, List<Transaction> transactions) {
         List<Transaction> filteredTransactions = new ArrayList<>();
 
@@ -187,6 +213,52 @@ public class TransactionManager {
 
         return filteredTransactions;
     }
+
+    //filterByDate Method
+
+    public List<Transaction> filterByDateRange(DateRange dateRange, List<Transaction> transactions) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+
+        for(Transaction transaction: transactions) {
+            LocalDate transactionDate =
+                    LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+            if(dateRange.includes(transactionDate)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
+    }
+
+    //filterByAmount Method
+
+    public List<Transaction> filterByAmountRange(AmountRange amountRange, List<Transaction> transactions) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+
+        for(Transaction transaction: transactions) {
+            if(amountRange.includes(transaction.getAmount())) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
+    }
+
+    //filterByDescription
+
+    public List<Transaction> filterByDescription(String descriptionFilter, List<Transaction> transactions) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+
+        for(Transaction transaction: transactions) {
+            if(transaction.getDescription().equals(descriptionFilter)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
+    }
+
+
 
     //leapYear Method
     private static boolean isLeapYear(int year) {
