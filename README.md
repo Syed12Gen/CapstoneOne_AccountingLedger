@@ -2,23 +2,23 @@
 
 This program allows user to track their transactions by means of ledger.
 
-##Purpose
+## Purpose
 This application is crafted to streamline the management of financial transactions. It enables users to record, search, and generate detailed reports about their financial activities efficiently.
 
-##Motivation and Target Audience
+## Motivation and Target Audience
 The Financial Transaction Manager is designed for individuals and small businesses that require a straightforward method to track their financial transactions without the need for complex accounting software.
 
-##Key Components
+# #Key Components
 TransactionManager
 Responsible for all operations related to transactions, including loading, saving, and querying transaction data.
 
-##Menu
+## Menu
 Offers a console-based user interface that facilitates user interaction with the system.
 
-##OutputFormatter
+## OutputFormatter
 Ensures transaction data is formatted into a clear and readable format.
 
-##Application Flow
+## Application Flow
 The program commences with the Main class, which initializes the TransactionManager and displays the main menu to engage users. This design provides a smooth and intuitive user experience.
 
 
