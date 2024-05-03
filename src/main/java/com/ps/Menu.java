@@ -1,4 +1,5 @@
 package com.ps;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Locale;
@@ -52,18 +53,28 @@ public class Menu {
 
     private void handleTransaction(boolean isDeposit) {
         System.out.print("Enter vendor name: ");
-        String vendor = scanner.next();
+        String vendor = scanner.nextLine();
         System.out.print("Enter amount: ");
         if (!scanner.hasNextDouble()) {
             System.out.println("Invalid input. Please enter a numeric value.");
             scanner.next();  // Clear the wrong input
             return;
         }
+
         double amount = scanner.nextDouble();
         if (!isDeposit) {
             amount = -amount; // Negative for payments
         }
-        Transaction transaction = new Transaction("2023-04-15", "12:00:00", "Transaction", vendor, amount);
+        scanner.nextLine(); // clear the new line character from the scanner
+
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine();
+
+        LocalDateTime now = LocalDateTime.now();
+        String formattedTimeString = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String formattedDateString = now.format(DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+        Transaction transaction = new Transaction
+                (formattedDateString, formattedTimeString, description, vendor, amount);
         transactionManager.addTransaction(transaction);
         System.out.println("Transaction recorded.");
     }
