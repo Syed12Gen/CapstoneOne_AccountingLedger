@@ -8,7 +8,7 @@ This application is crafted to streamline the management of financial transactio
 ## Motivation and Target Audience
 The Financial Transaction Manager is designed for individuals and small businesses that require a straightforward method to track their financial transactions without the need for complex accounting software.
 
-# #Key Components
+## Key Components
 TransactionManager
 Responsible for all operations related to transactions, including loading, saving, and querying transaction data.
 
