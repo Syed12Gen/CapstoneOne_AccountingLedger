@@ -1,3 +1,4 @@
+Date|Time|Description|Vendor|Amount
 2024-05-02|23:19:57|Vehicle Purchased|Vendor 3|-50000.00
 2024-05-02|23:24:09|Saved for Vehicle|Vendor 3|100000.00
 2024-05-02|23:54:08|Laptop Purchase|Vendor 4|-1500.00

@@ -59,12 +59,12 @@ Anytime the user enters an invalid command, an "invalid command" message will sh
 
 ## Interesting Piece of Code
 
-An interesting piece of code was the checkout process.
+The interesting piece of code was filter by amount range.
 
 <img alt="AmountRange" src="ReadMeImages/AmountRange.png">
 <img alt="FilterAmountRange" src="ReadMeImages/FilterAmountRange.png">
 
-The interesting piece of code was filter by amount range. 
+ 
 
 1. Encapsulation with AmountRange:
 The AmountRange class encapsulates numerical boundaries, providing methods to check if amounts fall within a specified range. This enhances code modularity and reusability.
