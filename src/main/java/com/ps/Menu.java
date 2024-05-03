@@ -1,13 +1,10 @@
 package com.ps;
+
 import java.time.LocalDateTime;
 import java.util.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
-import java.util.stream.Collectors;
-
 
 public class Menu {
     private TransactionManager transactionManager;
@@ -26,9 +23,10 @@ public class Menu {
             System.out.println("P) Make Payment");
             System.out.println("D) Deposits");
             System.out.println("R) Reports");
+            System.out.println("S) Search");
             System.out.println("X) Exit");
             System.out.print("Enter option: ");
-            option = scanner.next();
+            option = scanner.nextLine();
 
             switch (option.toUpperCase()) {
                 case "P":
@@ -39,6 +37,9 @@ public class Menu {
                     break;
                 case "R":
                     displayReportsMenu();
+                    break;
+                case "S":
+                    searchTransactions();
                     break;
                 case "X":
                     System.out.println("Exiting program.");
@@ -135,7 +136,7 @@ public class Menu {
         };
 
 
-        if(transactions.isEmpty()) {
+        if (transactions.isEmpty()) {
             System.out.println("No transactions found for selected report type.");
             return;
         }
@@ -154,4 +155,84 @@ public class Menu {
     }
 
 
+    private void searchTransactions() {
+        Map<TransactionSearchFilter, Object> filters = new HashMap<>();
+        while (true) {
+            System.out.println("\n**Search Menu**");
+            System.out.println("Please select a filter to add. " +
+                    "When you are done adding filters, press the X key to search using the selected filters: ");
+            System.out.println("1. Description");
+            System.out.println("2. Vendor");
+            System.out.println("3. Amount range");
+            System.out.println("4. Date range");
+            System.out.println("0. Go back");
+
+            String filter = scanner.nextLine();
+
+            if (filter.equalsIgnoreCase("X")) {
+                break;
+            }
+
+            if (filter.equalsIgnoreCase("0")) {
+                return;
+            }
+
+            TransactionSearchFilter selectedFilter = switch (filter) {
+                case "1" -> TransactionSearchFilter.DESCRIPTION;
+                case "2" -> TransactionSearchFilter.VENDOR;
+                case "3" -> TransactionSearchFilter.AMOUNT_RANGE;
+                case "4" -> TransactionSearchFilter.DATE_RANGE;
+                default -> null;
+            };
+
+            if (selectedFilter == null) {
+                System.out.println("You have selected an invalid filter. Please try again.");
+                continue;
+            }
+
+            if (selectedFilter.equals(TransactionSearchFilter.DATE_RANGE)) {
+                System.out.print("Please enter the minimum date in the format YYYY-MM-DD: ");
+                LocalDate minDate = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+                System.out.print("Please enter the maximum date in the format YYYY-MM-DD: ");
+                LocalDate maxDate = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
+                DateRange dateRange = new DateRange(minDate, maxDate);
+                filters.put(selectedFilter, dateRange);
+                System.out.println("Added date range filter"); //filter message
+            }
+
+            if (selectedFilter.equals(TransactionSearchFilter.AMOUNT_RANGE)) {
+                System.out.print("Please enter the minimum amount: ");
+                double minAmount = scanner.nextDouble();
+                scanner.nextLine(); // clear the trailing new line character
+                System.out.print("Please enter the maximum amount: ");
+                double maxAmount = scanner.nextDouble();
+                scanner.nextLine(); // clear the trailing new line character
+                AmountRange amountRange = new AmountRange(minAmount, maxAmount);
+                filters.put(selectedFilter, amountRange);
+                System.out.println("Added amount range filter"); //filter message
+            }
+
+            if (selectedFilter.equals(TransactionSearchFilter.DESCRIPTION)) {
+                System.out.print("Please enter the description filter: ");
+                String descriptionFilter = scanner.nextLine();
+                filters.put(selectedFilter, descriptionFilter);
+                System.out.println("Added description range filter"); //filter message
+            }
+
+            if (selectedFilter.equals(TransactionSearchFilter.VENDOR)) {
+                System.out.print("Please enter the vendor filter: ");
+                String vendorFilter = scanner.nextLine();
+                filters.put(selectedFilter, vendorFilter);
+                System.out.println("Added vendor filter"); //filter message
+            }
+        }
+
+
+        List<Transaction> foundTransactions = transactionManager.getFilteredTransactions(filters);
+        System.out.println("Found " + foundTransactions.size() + " transactions matching selected filter(s): \n");
+        if(foundTransactions.isEmpty()) {
+            return;
+        }
+        OutputFormatter.printOutput(foundTransactions);
+    }
 }

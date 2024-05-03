@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OutputFormatter {
-    public final static String[] TABLE_HEADERS = new String[] {"Date", "Time", "Description", "Vendor", "Amount"};
+    public final static String[] TABLE_HEADERS = new String[]{"Date", "Time", "Description", "Vendor", "Amount"};
 
     public static void printOutput(List<Transaction> transactions) {
         List<List<String>> transactionFormatData = new ArrayList<>();
         transactionFormatData.add(Arrays.asList(TABLE_HEADERS));
 
-        for(Transaction transaction: transactions) {
+        for (Transaction transaction : transactions) {
             List<String> transactionTokens = new ArrayList<>();
             transactionTokens.add(transaction.getDate() + "  | ");
             transactionTokens.add(transaction.getTime() + "  | ");

@@ -1,8 +1,5 @@
 package com.ps;
 
-//This class manages the transactions, including adding transactions and generating reports.
-
-
 import java.util.Objects;
 
 //Declaring all variables mentioned for txt file

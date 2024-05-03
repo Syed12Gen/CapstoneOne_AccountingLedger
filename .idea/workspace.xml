@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dddeedf8-0346-454e-9e82-35cb0b4eb8c5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ps/DateRange.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ps/OutputFormatter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/OutputFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/OutputFormatter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Transaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/TransactionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/TransactionManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/transactions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/transactions.txt" afterDir="false" />

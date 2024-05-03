@@ -72,9 +72,9 @@ public class TransactionManager {
 
         loadTransactions();
 
-        for(Transaction transaction: transactions) {
+        for (Transaction transaction : transactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
-            if(dateRange.includes(transactionDate)) {
+            if (dateRange.includes(transactionDate)) {
                 monthToDateTransactions.add(transaction);
             }
         }
@@ -92,9 +92,9 @@ public class TransactionManager {
 
         loadTransactions();
 
-        for(Transaction transaction: transactions) {
+        for (Transaction transaction : transactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
-            if(dateRange.includes(transactionDate)) {
+            if (dateRange.includes(transactionDate)) {
                 yearToDateTransactions.add(transaction);
             }
         }
@@ -122,9 +122,9 @@ public class TransactionManager {
 
         DateRange dateRange = new DateRange(startOfPreviousMonth, endOfPreviousMonth);
 
-        for(Transaction transaction: transactions) {
+        for (Transaction transaction : transactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
-            if(dateRange.includes(transactionDate)) {
+            if (dateRange.includes(transactionDate)) {
                 previousMonthTransactions.add(transaction);
             }
         }
@@ -145,18 +145,17 @@ public class TransactionManager {
         LocalDate previousYear = now.minusYears(1);
         LocalDate endOfPreviousYear;
 
-        if(isLeapYear(previousYear.getYear())) {
+        if (isLeapYear(previousYear.getYear())) {
             endOfPreviousYear = previousYear.withDayOfYear(366);
-        }
-        else {
+        } else {
             endOfPreviousYear = previousYear.withDayOfYear(365);
         }
 
         DateRange dateRange = new DateRange(startOfPreviousYear, endOfPreviousYear);
 
-        for(Transaction transaction: transactions) {
+        for (Transaction transaction : transactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
-            if(dateRange.includes(transactionDate)) {
+            if (dateRange.includes(transactionDate)) {
                 previousYearTransactions.add(transaction);
             }
         }
@@ -205,8 +204,8 @@ public class TransactionManager {
     public List<Transaction> filterByVendor(String vendorFilter, List<Transaction> transactions) {
         List<Transaction> filteredTransactions = new ArrayList<>();
 
-        for(Transaction transaction: transactions) {
-            if(transaction.getVendor().equals(vendorFilter)) {
+        for (Transaction transaction : transactions) {
+            if (transaction.getVendor().equals(vendorFilter)) {
                 filteredTransactions.add(transaction);
             }
         }
@@ -219,10 +218,10 @@ public class TransactionManager {
     public List<Transaction> filterByDateRange(DateRange dateRange, List<Transaction> transactions) {
         List<Transaction> filteredTransactions = new ArrayList<>();
 
-        for(Transaction transaction: transactions) {
+        for (Transaction transaction : transactions) {
             LocalDate transactionDate =
                     LocalDate.parse(transaction.getDate(), DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
-            if(dateRange.includes(transactionDate)) {
+            if (dateRange.includes(transactionDate)) {
                 filteredTransactions.add(transaction);
             }
         }
@@ -235,8 +234,8 @@ public class TransactionManager {
     public List<Transaction> filterByAmountRange(AmountRange amountRange, List<Transaction> transactions) {
         List<Transaction> filteredTransactions = new ArrayList<>();
 
-        for(Transaction transaction: transactions) {
-            if(amountRange.includes(transaction.getAmount())) {
+        for (Transaction transaction : transactions) {
+            if (amountRange.includes(transaction.getAmount())) {
                 filteredTransactions.add(transaction);
             }
         }
@@ -249,8 +248,8 @@ public class TransactionManager {
     public List<Transaction> filterByDescription(String descriptionFilter, List<Transaction> transactions) {
         List<Transaction> filteredTransactions = new ArrayList<>();
 
-        for(Transaction transaction: transactions) {
-            if(transaction.getDescription().equals(descriptionFilter)) {
+        for (Transaction transaction : transactions) {
+            if (transaction.getDescription().equals(descriptionFilter)) {
                 filteredTransactions.add(transaction);
             }
         }
@@ -259,13 +258,10 @@ public class TransactionManager {
     }
 
 
-
     //leapYear Method
     private static boolean isLeapYear(int year) {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
-
-
 
 
 }
