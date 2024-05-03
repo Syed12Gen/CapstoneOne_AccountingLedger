@@ -38,6 +38,17 @@ The user can perform various types of reporting including Month to date.
 
 </details>
 
+<details>
+
+**<summary> Search </summary>**
+
+<img alt="Search" src="ReadMeImages/Search.png">
+
+The user can search for transaction using various filters including amount range. User could also add multiple filters.
+
+</details>
+
+
 ## Error Handling
 
 
