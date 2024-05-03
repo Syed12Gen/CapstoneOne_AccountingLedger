@@ -1,4 +1,4 @@
-2024-05-01|01:52:11|Transaction 2|Vendor 1|-700.00
-2024-05-01|01:52:11|Transaction 1|Vendor 2|-500.00
 2024-05-02|23:19:57|Vehicle Purchased|Vendor 3|-50000.00
 2024-05-02|23:24:09|Saved for Vehicle|Vendor 3|100000.00
+2024-05-02|23:54:08|Laptop Purchase|Vendor 4|-1500.00
+2024-05-03|00:02:46|Savings|Vendor 4|5000.00
